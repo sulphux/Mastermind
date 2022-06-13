@@ -1,7 +1,6 @@
 #include "Arbiter.h"
 #include "Code.h"
 #include "Suggestion.h"
-#include "Arbiter.h"
 
 void Arbiter::rememberCodeToGuess(const CodePtr newCodeToGuess) {
 	_codeToGuess = newCodeToGuess;
