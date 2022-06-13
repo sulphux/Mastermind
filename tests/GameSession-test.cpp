@@ -1,11 +1,22 @@
-#include "gtest/gtest.h"
-#include "static/GameSession.h"
+#include <iostream>
+#include <vector>
 
-TEST(blaTest, test1) {
-    //arrange
-    //act
-    //assert
-    EXPECT_EQ (GameSession::bla (0),  0);
-    EXPECT_EQ (GameSession::bla (10), 20);
-    EXPECT_EQ (GameSession::bla (50), 100);
+#include "gtest/gtest.h"
+#include "GameSession.h"
+
+
+class GameSessionTest : public ::testing::Test {
+protected:
+    GameSession* gameSession;
+    virtual void SetUp()
+    {
+        gameSession = new GameSession();
+    }
+    virtual void TearDown() {
+        delete gameSession;
+    }
+};
+
+TEST_F(GameSessionTest, test1) {
+    
 }

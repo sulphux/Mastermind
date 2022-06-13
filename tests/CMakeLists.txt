@@ -1,4 +1,8 @@
+enable_testing()
+
 include(FetchContent)
+
+include_directories(${CMAKE_SOURCE_DIR}/source/include)
 
 FetchContent_Declare(
   googletest
@@ -10,11 +14,8 @@ FetchContent_MakeAvailable(googletest)
 add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
-add_executable(GameSession-test GameSession-test.cpp)
+add_executable(Mastermind-tests "Code-test.cpp" "Arbiter-test.cpp")
+target_include_directories(Mastermind-tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR})
+target_link_libraries(Mastermind-tests PRIVATE GTest::GTest Mastermind_lib)
 
-target_link_libraries(GameSession-test 
-	PRIVATE
-		GTest::GTest
-		GameSession_lib)
-
-add_test(Mastermind_gtests GameSession-test)
+add_test(Mastermind_gtests Mastermind-tests)
