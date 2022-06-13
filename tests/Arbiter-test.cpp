@@ -10,17 +10,17 @@
 
 class ArbiterTest : public ::testing::Test {
 protected:
-    Arbiter* arbiter;
+    Arbiter* _arbiter;
     const std::string CODE_TO_TEST_STR = "2531";
     const std::string CODE_TO_TEST_STR_REVERSED = "1352";
 
     ArbiterTest() {
-        arbiter = new Arbiter();
-        arbiter->rememberCodeToGuess(CodeFactory::createCodeFromString(CODE_TO_TEST_STR));
+        _arbiter = new Arbiter();
+        _arbiter->rememberCodeToGuess(CodeFactory::createCodeFromString(CODE_TO_TEST_STR));
     }
     ~ArbiterTest() {
-        if(arbiter != nullptr)
-            delete arbiter;
+        if(_arbiter != nullptr)
+            delete _arbiter;
     }
     virtual void SetUp()
     {
@@ -29,7 +29,7 @@ protected:
     virtual void TearDown() {}
 
     virtual void scenario(std::string guessedCodeStr, int expectedAtPosition, int expectedNotAtPosition) {
-        Suggestion suggestion = arbiter->makeNewSuggestionFromNewCode(CodeFactory::createCodeFromString(guessedCodeStr));
+        Suggestion suggestion = _arbiter->makeNewSuggestionFromNewCode(CodeFactory::createCodeFromString(guessedCodeStr));
 
         EXPECT_EQ(expectedAtPosition, suggestion.getAtPositionAmount());
         EXPECT_EQ(expectedNotAtPosition, suggestion.getNotAtPositionAmount());

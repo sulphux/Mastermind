@@ -5,10 +5,10 @@
 
 class Arbiter {
 public:
-	Arbiter() { codeToGuess = nullptr; };
-	void rememberCodeToGuess(const Code* codeToGuess);
+	Arbiter() { _codeToGuess = nullptr; };
+	void rememberCodeToGuess(const Code* _codeToGuess);
 	Suggestion makeNewSuggestionFromNewCode(const Code* codeUserGuessed);
 	Code* unrevealSolution() const;
 private:
-	Code* codeToGuess = nullptr;
+	Code* _codeToGuess = nullptr;
 };

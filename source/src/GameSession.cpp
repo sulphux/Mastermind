@@ -17,29 +17,29 @@ GameSession::GameSession() {
 
 void GameSession::startNewGame()
 {
-	arbiter.rememberCodeToGuess(CodeFactory::createRandomCode(codeSize));
-	currentAttempt = 0;
-	gameIsFinished = false;
-	codeIsSolved = false;
-	if (!guessAttempts.empty()) {
-		guessAttempts.clear();
+	_arbiter.rememberCodeToGuess(CodeFactory::createRandomCode(_codeSize));
+	_currentAttempt = 0;
+	_gameIsFinished = false;
+	_codeIsSolved = false;
+	if (!_guessAttempts.empty()) {
+		_guessAttempts.clear();
 	}
 }
 
 void GameSession::finishGame()
 {
-	gameIsFinished = true;
+	_gameIsFinished = true;
 }
 
 void GameSession::showPlayerGuesses()
 {
-	if (guessAttempts.empty()) {
+	if (_guessAttempts.empty()) {
 		return;
 	}
 	std::cout << "your last guesses:" << std::endl;
 	int i = 1;
-	auto it = guessAttempts.cbegin();
-	for (; it != guessAttempts.cend(); ++it) {
+	auto it = _guessAttempts.cbegin();
+	for (; it != _guessAttempts.cend(); ++it) {
 		std::cout << "Attempt " << i << ": " << *((*it).code) << " " << (*it).suggestion << std::endl;
 		i++;
 	}
@@ -53,7 +53,7 @@ std::string GameSession::getGuessCodeFromPlayer()
 	do {
 		std::cin >> guessStr;
 		std::string feedbackMessage;
-		isGuessStrCorrect = checkInputStringCorrectness(codeSize, elements, guessStr, feedbackMessage);
+		isGuessStrCorrect = _checkInputStringCorrectness(_codeSize, _elements, guessStr, feedbackMessage);
 		if (!isGuessStrCorrect) {
 			std::cout << feedbackMessage;
 			std::cout << " Type your guess again !" << std::endl;
@@ -65,38 +65,38 @@ std::string GameSession::getGuessCodeFromPlayer()
 void GameSession::judgeNewCodeAndStore(const std::string codeStr)
 {
 	Code* newCode = CodeFactory::createCodeFromString(codeStr);
-	Suggestion suggestion = arbiter.makeNewSuggestionFromNewCode(newCode);
+	Suggestion suggestion = _arbiter.makeNewSuggestionFromNewCode(newCode);
 	ProcessedGuess processedGuess(newCode, suggestion);
-	codeIsSolved = checkIfGuessIsWinningTheGame(processedGuess);
-	guessAttempts.push_back(processedGuess);
-	currentAttempt++;
+	_codeIsSolved = _checkIfGuessIsWinningTheGame(processedGuess);
+	_guessAttempts.push_back(processedGuess);
+	_currentAttempt++;
 }
 
 bool GameSession::isGameFinished()
 {
-	if (!gameIsFinished && currentAttempt == maxAttempts) {
-		gameIsFinished = true; 
+	if (!_gameIsFinished && _currentAttempt == _maxAttempts) {
+		_gameIsFinished = true; 
 		return true;
 	}
-	return gameIsFinished;
+	return _gameIsFinished;
 }
 
 bool GameSession::isPlayerWinner() const
 {
-	return codeIsSolved;
+	return _codeIsSolved;
 }
 
 int GameSession::getSizeOfStoredGuesses() const
 {
-	return guessAttempts.size();
+	return _guessAttempts.size();
 }
 
 void GameSession::printSolution() const
 {
-	std::cout << "Solution is:" << *(arbiter.unrevealSolution()) << std::endl;
+	std::cout << "Solution is:" << *(_arbiter.unrevealSolution()) << std::endl;
 }
 
-bool GameSession::checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage)
+bool GameSession::_checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage)
 {
 	feedbackMessage = "";
 
@@ -135,9 +135,9 @@ bool GameSession::checkInputStringCorrectness(const size_t size, const int maxEl
 	return true;
 }
 
-bool GameSession::checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess)
+bool GameSession::_checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess)
 {
-	if (processedGuess.suggestion.getAtPositionAmount() == codeSize) {
+	if (processedGuess.suggestion.getAtPositionAmount() == _codeSize) {
 		return true;
 	}
 	return false;

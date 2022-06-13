@@ -28,16 +28,16 @@ private:
 
 	typedef std::vector<ProcessedGuess> codePtrVector;
 
-	Arbiter arbiter;
-	const int maxAttempts = 3;
-	const size_t codeSize = 4;
-	const int elements = 8;
+	Arbiter _arbiter;
+	const int _maxAttempts = 10;
+	const size_t _codeSize = 4;
+	const int _elements = 8;
 
-	int currentAttempt = 0;
-	bool gameIsFinished = false;
-	bool codeIsSolved = false;
-	codePtrVector guessAttempts;
+	int _currentAttempt = 0;
+	bool _gameIsFinished = false;
+	bool _codeIsSolved = false;
+	codePtrVector _guessAttempts;
 
-	bool checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage);
-	bool checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess);
+	bool _checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage);
+	bool _checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess);
 };
