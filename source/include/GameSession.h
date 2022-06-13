@@ -9,7 +9,18 @@
 
 class GameSession {
 public:
-	GameSession();
+	GameSession() = default;
+	void run();
+
+private:
+	struct ProcessedGuess {
+		ProcessedGuess(CodePtr c, Suggestion s) : code(c), suggestion(s) {}
+		CodePtr code;
+		Suggestion suggestion;
+	};
+
+	typedef std::vector<ProcessedGuess> ProcessedGuessesVector;
+
 	void startNewGame();
 	void finishGame();
 	void showPlayerGuesses();
@@ -19,14 +30,6 @@ public:
 	bool isPlayerWinner() const;
 	int getSizeOfStoredGuesses() const;
 	void printSolution() const;
-private:
-	struct ProcessedGuess {
-		ProcessedGuess(CodePtr c, Suggestion s) : code(c), suggestion(s) {}
-		CodePtr code;
-		Suggestion suggestion;
-	};
-
-	typedef std::vector<ProcessedGuess> ProcessedGuessesVector;
 
 	Arbiter _arbiter;
 	const int _maxAttempts = 10;
