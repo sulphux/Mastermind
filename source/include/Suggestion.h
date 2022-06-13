@@ -14,6 +14,8 @@ public:
 	void incrementNotAtPosition();
 	int getAtPositionAmount();
 	int getNotAtPositionAmount();
+
+	friend std::ostream& operator<<(std::ostream& os, const Suggestion& st);
 private:
 	int _atPosition;
 	int _notAtPosition;

@@ -6,17 +6,6 @@
 #include "Code.h"
 #include "Utils.h"
 
-Code::Code(int num, ...)
-{
-	_size = num;
-	va_list valist;
-	va_start(valist, num);
-	for (int i = 0; i < num; ++i) {
-		_codeData.push_back(va_arg(valist, int));
-	}
-	va_end(valist);
-}
-
 Code::Code(intVector _code)
 {
 	_codeData = _code;
@@ -41,6 +30,6 @@ std::ostream& operator<<(std::ostream& os, const Code& ct)
 	for (auto it = ct._codeData.cbegin(); it != ct._codeData.cend(); ++it) {
 		os << "| " << *it << ' ';
 	}
-	os << "|" << std::endl;
+	os << "|";
 	return os;
 }

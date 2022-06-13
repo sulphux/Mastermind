@@ -16,6 +16,7 @@ protected:
 
     ArbiterTest() {
         arbiter = new Arbiter();
+        arbiter->rememberCodeToGuess(CodeFactory::createCodeFromString(CODE_TO_TEST_STR));
     }
     ~ArbiterTest() {
         if(arbiter != nullptr)
@@ -23,17 +24,15 @@ protected:
     }
     virtual void SetUp()
     {
-        arbiter->rememberCodeToGuess(CodeFactory::createCodeFromString(CODE_TO_TEST_STR));
+
     }
     virtual void TearDown() {}
 
     virtual void scenario(std::string guessedCodeStr, int expectedAtPosition, int expectedNotAtPosition) {
-        Suggestion* suggestion = arbiter->makeNewSuggestionFromNewCode(CodeFactory::createCodeFromString(guessedCodeStr));
+        Suggestion suggestion = arbiter->makeNewSuggestionFromNewCode(CodeFactory::createCodeFromString(guessedCodeStr));
 
-        EXPECT_EQ(expectedAtPosition, suggestion->getAtPositionAmount());
-        EXPECT_EQ(expectedNotAtPosition, suggestion->getNotAtPositionAmount());
-
-        delete suggestion;
+        EXPECT_EQ(expectedAtPosition, suggestion.getAtPositionAmount());
+        EXPECT_EQ(expectedNotAtPosition, suggestion.getNotAtPositionAmount());
     }
 };
 

@@ -13,8 +13,7 @@ Code* CodeFactory::createRandomCode(const int size)
 		newCodeVector.push_back(rand() % 8);
 	}
 
-	Code* newCode = new Code(newCodeVector);
-	return newCode;
+	return new Code(newCodeVector);
 }
 
 
@@ -27,6 +26,6 @@ Code* CodeFactory::createCodeFromString(const std::string codeStr)
 		num /= 10;
 	} while (num > 0);
 	std::reverse(newCodeVector.begin(), newCodeVector.end());
-	Code* newCode = new Code(newCodeVector);
-	return newCode;
+	
+	return new Code(newCodeVector);
 }

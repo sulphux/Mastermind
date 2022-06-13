@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "Suggestion.h"
 
 std::string Suggestion::toString()
@@ -22,4 +23,11 @@ int Suggestion::getAtPositionAmount() {
 
 int Suggestion::getNotAtPositionAmount() {
 	return this->_notAtPosition;
+}
+
+std::ostream& operator<<(std::ostream& os, const Suggestion& st)
+{
+	os << "| AtPos: " << std::to_string(st._atPosition) << ' ';
+	os << "| NotAtPos: " << std::to_string(st._notAtPosition) << " |";
+	return os;
 }

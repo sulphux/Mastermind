@@ -9,7 +9,6 @@
 
 class Code {
 public:
-	Code(int num, ...);
 	Code(intVector _code);
 	
 	size_t getSize();

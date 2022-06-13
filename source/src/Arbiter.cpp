@@ -2,12 +2,12 @@
 #include "Suggestion.h"
 #include "Arbiter.h"
 
-void Arbiter::rememberCodeToGuess(Code* codeToGuess) {
-	this->codeToGuess = codeToGuess;
+void Arbiter::rememberCodeToGuess(Code* newCodeToGuess) {
+	codeToGuess = newCodeToGuess;
 }
 
-Suggestion* Arbiter::makeNewSuggestionFromNewCode(Code* codeUserGuessed) {
-	Suggestion* newSuggestion = new Suggestion();
+Suggestion Arbiter::makeNewSuggestionFromNewCode(Code* codeUserGuessed) {
+	Suggestion newSuggestion;
 	for(int i = 0; i<codeUserGuessed->getSize(); ++i) {
 		bool isPresent = false;
 		bool isOnPosition = false;
@@ -15,10 +15,10 @@ Suggestion* Arbiter::makeNewSuggestionFromNewCode(Code* codeUserGuessed) {
 		for(int j = 0; j<codeToGuess->getSize(); ++j) {
 			if (codeUserGuessed->getDigitAt(i) == codeToGuess->getDigitAt(j)) {
 				if (i == j) {
-					newSuggestion->incrementAtPosition();
+					newSuggestion.incrementAtPosition();
 					break;
 				}
-				newSuggestion->incrementNotAtPosition();
+				newSuggestion.incrementNotAtPosition();
 				break;
 			}
 		}
