@@ -37,6 +37,7 @@ int main()
 
 			if (gameSession.isPlayerWinner()) {
 				std::cout << WIN_MESSAGE << std::endl;
+				gameSession.printSolution();
 			}
 			else if (gameSession.isGameFinished()) {
 				std::cout << std::endl << SEPARATOR << std::endl;
@@ -44,7 +45,7 @@ int main()
 				gameSession.showPlayerGuesses();
 				gameSession.printSolution();
 			}
-		} while (!gameSession.isGameFinished());
+		} while (!gameSession.isGameFinished() && !gameSession.isPlayerWinner());
 
 		std::cout << AGAIN_MESSAGE + "[y/N]" << std::endl;
 
