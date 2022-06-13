@@ -21,12 +21,12 @@ public:
 	void printSolution() const;
 private:
 	struct ProcessedGuess {
-		ProcessedGuess(Code* c, Suggestion s) : code(c), suggestion(s) {}
-		Code* code;
+		ProcessedGuess(CodePtr c, Suggestion s) : code(c), suggestion(s) {}
+		CodePtr code;
 		Suggestion suggestion;
 	};
 
-	typedef std::vector<ProcessedGuess> codePtrVector;
+	typedef std::vector<ProcessedGuess> ProcessedGuessesVector;
 
 	Arbiter _arbiter;
 	const int _maxAttempts = 10;
@@ -36,7 +36,7 @@ private:
 	int _currentAttempt = 0;
 	bool _gameIsFinished = false;
 	bool _codeIsSolved = false;
-	codePtrVector _guessAttempts;
+	ProcessedGuessesVector _guessAttempts;
 
 	bool _checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage);
 	bool _checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess);

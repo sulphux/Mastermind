@@ -11,12 +11,10 @@ TEST(Code, stringToCodeTest) {
 
 	int expected[ARRAY_SIZE] = { 6, 5, 4, 1, 2, 3 };
 
-	Code* code = CodeFactory::createCodeFromString("654123");
+	CodePtr code = CodeFactory::createCodeFromString("654123");
 
 	for (int i = 0; i < ARRAY_SIZE; ++i)
 	{
 		EXPECT_EQ(expected[i], code->getDigitAt(i));
 	}
-
-	delete code;
 }

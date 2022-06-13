@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdarg>
 #include <ostream>
+#include <memory>
 
 #include "Utils.h"
 
@@ -19,3 +20,5 @@ private:
 	intVector _codeData;
 	size_t _size;
 };
+
+typedef std::shared_ptr<Code> CodePtr;

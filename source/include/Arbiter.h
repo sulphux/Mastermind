@@ -6,9 +6,9 @@
 class Arbiter {
 public:
 	Arbiter() { _codeToGuess = nullptr; };
-	void rememberCodeToGuess(const Code* _codeToGuess);
-	Suggestion makeNewSuggestionFromNewCode(const Code* codeUserGuessed);
-	Code* unrevealSolution() const;
+	void rememberCodeToGuess(const CodePtr _codeToGuess);
+	Suggestion makeNewSuggestionFromNewCode(const CodePtr codeUserGuessed);
+	CodePtr unrevealSolution() const;
 private:
-	Code* _codeToGuess = nullptr;
+	CodePtr _codeToGuess = nullptr;
 };

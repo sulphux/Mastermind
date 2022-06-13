@@ -1,23 +1,28 @@
 #include <algorithm>
-
+#include <memory>
+#include <random>
 
 #include "CodeFactory.h"
 #include "Code.h"
 #include "Utils.h"
 
-Code* CodeFactory::createRandomCode(const int size)
+CodePtr CodeFactory::createRandomCode(const int size)
 {
 	intVector newCodeVector;
 
-	for (int i = 0; i < size; ++i) {
-		newCodeVector.push_back(rand() % 8 + 1);
-	}
+	const intVector in{ 1, 2, 3, 4, 5, 6, 7, 8 };
+	intVector out;
+	size_t nelems = 4;
 
-	return new Code(newCodeVector);
+	std::sample(in.begin(), in.end(), 
+		std::back_inserter(out), nelems, 
+		std::mt19937{ std::random_device{}() } );
+
+	return make_shared<Code>(newCodeVector);
 }
 
 
-Code* CodeFactory::createCodeFromString(const std::string codeStr)
+CodePtr CodeFactory::createCodeFromString(const std::string codeStr)
 {
 	intVector newCodeVector;
 	int num = std::stoi(codeStr);
@@ -27,5 +32,5 @@ Code* CodeFactory::createCodeFromString(const std::string codeStr)
 	} while (num > 0);
 	std::reverse(newCodeVector.begin(), newCodeVector.end());
 	
-	return new Code(newCodeVector);
+	return make_shared<Code>(newCodeVector);
 }

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cstdarg>
+#include <memory>
 
 #include "Code.h"
 #include "Utils.h"

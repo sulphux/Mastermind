@@ -1,8 +1,4 @@
 #include "GameSession.h"
-#include "GameSession.h"
-#include "GameSession.h"
-#include "GameSession.h"
-#include "GameSession.h"
 #include "Code.h"
 #include "CodeFactory.h"
 
@@ -64,7 +60,7 @@ std::string GameSession::getGuessCodeFromPlayer()
 
 void GameSession::judgeNewCodeAndStore(const std::string codeStr)
 {
-	Code* newCode = CodeFactory::createCodeFromString(codeStr);
+	CodePtr newCode = CodeFactory::createCodeFromString(codeStr);
 	Suggestion suggestion = _arbiter.makeNewSuggestionFromNewCode(newCode);
 	ProcessedGuess processedGuess(newCode, suggestion);
 	_codeIsSolved = _checkIfGuessIsWinningTheGame(processedGuess);

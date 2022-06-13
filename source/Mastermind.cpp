@@ -13,6 +13,7 @@ int main()
 	const std::string WELCOME_MESSAGE= "Welcome to Mastermind game!\n\n"
 									   "Try to guess the code! Code has 4 digits, which should be unique \n"
 									   "each other and also in range = [1,8]\n\n"
+									   "You have 10 attempts\n\n"
 									   "Let's start!";
 	const std::string AGAIN_MESSAGE = "Wanna play a new game ?";
 	const std::string BYE_MESSAGE = "See you later!";
