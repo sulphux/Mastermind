@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Suggestion.h"
 
-std::string Suggestion::toString()
+std::string Suggestion::toString() const
 {
 	std::string result;
 	result = "A: " + std::to_string(this->_atPosition) + " P: " + std::to_string(this->_notAtPosition);
@@ -17,11 +17,11 @@ void Suggestion::incrementNotAtPosition() {
 	this->_notAtPosition++;
 }
 
-int Suggestion::getAtPositionAmount() {
+int Suggestion::getAtPositionAmount() const {
 	return this->_atPosition;
 }
 
-int Suggestion::getNotAtPositionAmount() {
+int Suggestion::getNotAtPositionAmount() const {
 	return this->_notAtPosition;
 }
 

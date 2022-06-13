@@ -11,8 +11,8 @@ class Code {
 public:
 	Code(intVector _code);
 	
-	size_t getSize();
-	int getDigitAt(const size_t n);
+	size_t getSize() const;
+	int getDigitAt(const size_t n) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Code& ct);
 private:

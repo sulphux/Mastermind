@@ -9,11 +9,11 @@ public:
 		_atPosition = 0;
 		_notAtPosition = 0;
 	}
-	std::string toString();
+	std::string toString() const;
 	void incrementAtPosition();
 	void incrementNotAtPosition();
-	int getAtPositionAmount();
-	int getNotAtPositionAmount();
+	int getAtPositionAmount() const;
+	int getNotAtPositionAmount() const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Suggestion& st);
 private:

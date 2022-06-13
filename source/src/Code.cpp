@@ -12,12 +12,12 @@ Code::Code(intVector _code)
 	_size = _code.size();
 }
 
-size_t Code::getSize()
+size_t Code::getSize() const
 {
 	return _codeData.size();
 }
 
-int Code::getDigitAt(const size_t n)
+int Code::getDigitAt(const size_t n) const
 {
 	if (n >= 0 && n < _size) {
 		return _codeData.at(n);

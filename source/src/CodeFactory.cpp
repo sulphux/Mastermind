@@ -10,7 +10,7 @@ Code* CodeFactory::createRandomCode(const int size)
 	intVector newCodeVector;
 
 	for (int i = 0; i < size; ++i) {
-		newCodeVector.push_back(rand() % 8);
+		newCodeVector.push_back(rand() % 8 + 1);
 	}
 
 	return new Code(newCodeVector);

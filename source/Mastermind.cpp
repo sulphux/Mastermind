@@ -1,6 +1,4 @@
-﻿#include <cstdlib>
-#include <ctime>
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 
 #include "GameSession.h"
@@ -8,44 +6,42 @@
 #include "Code.h"
 #include "Arbiter.h"
 
-struct ProcessedGuess {
-	ProcessedGuess(Code* c, Suggestion s) : code(c), suggestion(s) {}
-	Code* code;
-	Suggestion suggestion;
-};
-
-typedef std::vector<ProcessedGuess> codePtrVector;
-
-codePtrVector guessAttempts;
 
 int main()
 {
-	srand((int)time(0)); // it should be always on top of main
-
-	Arbiter arbiter;
-	arbiter.rememberCodeToGuess(CodeFactory::createCodeFromString("1234"));
-
-	std::cout << "Guess the code!" << std::endl;
-
-	while (1 == 1) {
-		std::cout << "your last guesses:" << std::endl;
-		auto it = guessAttempts.cbegin();
-		for (; it != guessAttempts.cend(); ++it) {
-			std::cout << *((*it).code) << " " << (*it).suggestion << std::endl;
-		}
-		std::cout << "write your next guess:" << std::endl;
-
-		std::string guessStr;
-		std::cin >> guessStr;
-		/// TODO: check if correct
-		/// assuming this is
-		Code* newCode = CodeFactory::createCodeFromString(guessStr);
-		Suggestion suggestion = arbiter.makeNewSuggestionFromNewCode(newCode);
-		
-		/// TODO: check if player wins
-		guessAttempts.push_back(ProcessedGuess(newCode, suggestion));
-	}
+	GameSession gameSession;
 
 
+	std::cout << "Welcome to Mastermind game!" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Try to guess the code! Code has 4 digits, which should be unique \neach other and also in range = [1,8] " << std::endl;
+	std::cout << std::endl;
+
+	char s = '\0';
+
+	do {
+		gameSession.startNewGame();
+		do {
+			std::cout << std::endl << "############################################################" << std::endl;
+			gameSession.showPlayerGuesses();
+
+			std::string newCodeStr = gameSession.getGuessCodeFromPlayer();
+			gameSession.judgeNewCodeAndStore(newCodeStr);
+
+			if (gameSession.isPlayerWinner()) {
+				std::cout << "CONGRATULATIONS!! YOU WIN!!!" << std::endl;
+			}
+			else if (gameSession.isGameFinished()) {
+				std::cout << "Sorry too many attempts! Game finished!" << std::endl;
+				gameSession.showPlayerGuesses();
+				gameSession.printSolution();
+			}
+		} while (!gameSession.isGameFinished());
+
+		std::cout << "Wanna play a new game?[y/N]" << std::endl;
+
+		std::cin >> s;
+	} while (s == 'y' || s == 'Y');
+	std::cout << "BYE!";
 	return 0;
 }
