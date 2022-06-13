@@ -3,13 +3,12 @@
 #include "CodeFactory.h"
 #include "GameMessages.h"
 
-
 #include <string_view>
 #include <string>
-#include <cstdlib>
-#include <ctime>
 #include <vector>
 #include <iostream>
+#include <utility>
+#include <sstream>
 
 using namespace game_msg;
 using namespace std::literals;
@@ -22,25 +21,25 @@ void GameSession::run()
 	char userChoice = '\0';
 
 	do {
-		startNewGame();
+		_startNewGame();
 		do {
 			std::cout << std::endl << SEPARATOR << std::endl;
-			showPlayerGuesses();
+			_showPlayerGuesses();
 
-			std::string newCodeStr = getGuessCodeFromPlayer();
-			judgeNewCodeAndStore(newCodeStr);
+			std::string newCodeStr = _getGuessCodeFromPlayer();
+			_judgeNewCodeAndStore(newCodeStr);
 
-			if (isPlayerWinner()) {
+			if (_isPlayerWinner()) {
 				std::cout << WIN_MESSAGE << std::endl;
-				printSolution();
+				_printSolution();
 			}
-			else if (isGameFinished()) {
+			else if (_isGameFinished()) {
 				std::cout << std::endl << SEPARATOR << std::endl;
 				std::cout << FAIL_MESSAGE << std::endl;
-				showPlayerGuesses();
-				printSolution();
+				_showPlayerGuesses();
+				_printSolution();
 			}
-		} while (!isGameFinished() && !isPlayerWinner());
+		} while (!_isGameFinished() && !_isPlayerWinner());
 
 		std::cout << AGAIN_MESSAGE << YN_CHOICE << std::endl;
 
@@ -49,9 +48,9 @@ void GameSession::run()
 	std::cout << BYE_MESSAGE << std::endl;
 }
 
-void GameSession::startNewGame()
+inline void GameSession::_startNewGame()
 {
-	_arbiter.rememberCodeToGuess(CodeFactory::createRandomCode(_codeSize));
+	_arbiter.rememberCodeToGuess(CodeFactory::createRandomCode(_CODE_SIZE));
 	_currentAttempt = 0;
 	_gameIsFinished = false;
 	_codeIsSolved = false;
@@ -60,12 +59,12 @@ void GameSession::startNewGame()
 	}
 }
 
-void GameSession::finishGame()
+void GameSession::_finishGame()
 {
 	_gameIsFinished = true;
 }
 
-void GameSession::showPlayerGuesses()
+void GameSession::_showPlayerGuesses()
 {
 	if (_guessAttempts.empty()) {
 		return;
@@ -79,24 +78,27 @@ void GameSession::showPlayerGuesses()
 	}
 }
 
-std::string GameSession::getGuessCodeFromPlayer()
+std::string GameSession::_getGuessCodeFromPlayer()
 {
 	std::cout << WRITE_YOUR_GUESS << std::endl;
 	std::string guessStr;
-	bool isGuessStrCorrect = true;
+	std::pair<bool, std::string> result;
 	do {
 		std::cin >> guessStr;
-		std::string feedbackMessage;
-		isGuessStrCorrect = _checkInputStringCorrectness(_codeSize, _elements, guessStr, feedbackMessage);
-		if (!isGuessStrCorrect) {
-			std::cout << feedbackMessage;
+		result = _checkInputStringCorrectness(guessStr);
+		if (result.first) {
+			return guessStr;
+		}
+		else {
+			std::cout << result.second;
 			std::cout << TYPE_AGAIN << std::endl;
 		}
-	} while (!isGuessStrCorrect);
+	} while (!result.first);
+
 	return guessStr;
 }
 
-void GameSession::judgeNewCodeAndStore(const std::string codeStr)
+void GameSession::_judgeNewCodeAndStore(const std::string& codeStr)
 {
 	CodePtr newCode = CodeFactory::createCodeFromString(codeStr);
 	Suggestion suggestion = _arbiter.makeNewSuggestionFromNewCode(newCode);
@@ -106,75 +108,65 @@ void GameSession::judgeNewCodeAndStore(const std::string codeStr)
 	_currentAttempt++;
 }
 
-bool GameSession::isGameFinished()
+bool GameSession::_isGameFinished()
 {
-	if (!_gameIsFinished && _currentAttempt == _maxAttempts) {
+	if (!_gameIsFinished && _currentAttempt == _MAX_ATTEMPTS) {
 		_gameIsFinished = true; 
-		return true;
 	}
 	return _gameIsFinished;
 }
 
-bool GameSession::isPlayerWinner() const
+inline bool GameSession::_isPlayerWinner() const
 {
 	return _codeIsSolved;
 }
 
-int GameSession::getSizeOfStoredGuesses() const
+inline size_t GameSession::_getSizeOfStoredGuesses() const
 {
 	return _guessAttempts.size();
 }
 
-void GameSession::printSolution() const
+void GameSession::_printSolution() const
 {
 	std::cout << SOLUTION_IS << *(_arbiter.unrevealSolution()) << std::endl;
 }
 
-bool GameSession::_checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage)
+std::pair<bool, std::string> GameSession::_checkInputStringCorrectness(const std::string& str)
 {
-	feedbackMessage = "";
-
 	// Check size
-	if (str.length() != size) {
-		feedbackMessage = CODE_WRONG_SIZE;
-		return false;
+	if (str.length() != _CODE_SIZE) {
+		return std::make_pair(false, CODE_WRONG_SIZE);
 	}
 
 	// Check if all are digits
-	for (char const& ch : str) {
+	for (auto ch : str) {
 		if (std::isdigit(ch) != 0) {
 			int num = (int)ch - 48;
 			// Check if is in range
-			if (num == 0 || num > maxElement) {
-				feedbackMessage = CODE_OUT_OF_RANGE_L;
-				feedbackMessage += std::to_string(maxElement);
-				feedbackMessage += CODE_OUT_OF_RANGE_R;
-				return false;
+			if (num == 0 || num > _ELEMENTS_AMOUNT) {
+				return std::make_pair(false, std::string(CODE_OUT_OF_RANGE_L) + 
+													std::to_string(_ELEMENTS_AMOUNT) + 
+													std::string(CODE_OUT_OF_RANGE_R));
 			}
 		}
 		else {
-			feedbackMessage = CODE_ONLY_DIGITS;
-			return false;
+			return std::make_pair(false, CODE_ONLY_DIGITS);
 		}
 	}
 
 	// Check uniqueness of all digits
-	for (int i = 0; i < str.length() - 1; i++) {
-		for (int j = i + 1; j < str.length(); j++) {
+	for (size_t i = 0; i < str.length() - 1; ++i) {
+		for (size_t j = i + 1; j < str.length(); ++j) {
 			if (str[i] == str[j]) {
-				feedbackMessage = CODE_UNIQUE_DIGITS;
-				return false;
+				return std::make_pair(false, CODE_UNIQUE_DIGITS);
 			}
 		}
 	}
 
-	return true;
+	return std::make_pair(true, std::string());
 }
 
-bool GameSession::_checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess)
+inline bool GameSession::_checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess)
 {
-	if (processedGuess.suggestion.getAtPositionAmount() == _codeSize) {
-		return true;
-	}
-	return false;
+	return processedGuess.suggestion.getAtPositionAmount() == _CODE_SIZE;
 }

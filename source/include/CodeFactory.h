@@ -5,5 +5,7 @@
 class CodeFactory {
 public:
 	static CodePtr createRandomCode(const int size);
-	static CodePtr createCodeFromString(const std::string codeStr);
+	static CodePtr createCodeFromString(const std::string& codeStr);
+private:
+	static constexpr int _NUMBER_BASE = 10;
 };

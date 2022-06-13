@@ -5,31 +5,26 @@
 #include <memory>
 
 #include "Code.h"
-#include "Utils.h"
 
-Code::Code(intVector _code)
-{
-	_codeData = _code;
-	_size = _code.size();
-}
 
-size_t Code::getSize() const
-{
-	return _codeData.size();
-}
 
 int Code::getDigitAt(const size_t n) const
 {
-	if (n >= 0 && n < _size) {
+	try
+	{
 		return _codeData.at(n);
+	}
+	catch (const std::out_of_range& d)
+	{
+		return -1;
 	}
 	return -1;
 }
 
 std::ostream& operator<<(std::ostream& os, const Code& ct)
 {
-	for (auto it = ct._codeData.cbegin(); it != ct._codeData.cend(); ++it) {
-		os << "| " << *it << ' ';
+	for (const auto val : ct._codeData) {
+		os << "| " << val << ' ';
 	}
 	os << "|";
 	return os;

@@ -6,19 +6,21 @@
 #include <ostream>
 #include <memory>
 
-#include "Utils.h"
+
 
 class Code {
 public:
-	Code(intVector _code);
+	Code() = default; 
+	Code(std::vector<int> _code) : _codeData(_code) {}
+	~Code() = default;
 	
-	size_t getSize() const;
+	[[nodiscard]] size_t getSize() const { return _codeData.size(); };
+
 	int getDigitAt(const size_t n) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Code& ct);
 private:
-	intVector _codeData;
-	size_t _size;
+	std::vector<int> _codeData;
 };
 
 typedef std::shared_ptr<Code> CodePtr;

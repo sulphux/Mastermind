@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <array>
 
 #include "gtest/gtest.h"
 #include "Code.h"
@@ -9,7 +10,7 @@
 TEST(Code, stringToCodeTest) {
 	const size_t ARRAY_SIZE = 6;
 
-	int expected[ARRAY_SIZE] = { 6, 5, 4, 1, 2, 3 };
+	std::array<int, ARRAY_SIZE> expected = { 6, 5, 4, 1, 2, 3 };
 
 	CodePtr code = CodeFactory::createCodeFromString("654123");
 

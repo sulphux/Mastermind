@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "gtest/gtest.h"
 
@@ -10,22 +11,18 @@
 
 class ArbiterTest : public ::testing::Test {
 protected:
-    Arbiter* _arbiter;
+    std::shared_ptr<Arbiter> _arbiter;
     const std::string CODE_TO_TEST_STR = "2531";
     const std::string CODE_TO_TEST_STR_REVERSED = "1352";
 
     ArbiterTest() {
-        _arbiter = new Arbiter();
+        _arbiter = std::make_shared<Arbiter>();
         _arbiter->rememberCodeToGuess(CodeFactory::createCodeFromString(CODE_TO_TEST_STR));
     }
-    ~ArbiterTest() {
-        if(_arbiter != nullptr)
-            delete _arbiter;
-    }
-    virtual void SetUp()
-    {
 
-    }
+    ~ArbiterTest() = default;
+
+    virtual void SetUp() {}
     virtual void TearDown() {}
 
     virtual void scenario(std::string guessedCodeStr, int expectedAtPosition, int expectedNotAtPosition) {
