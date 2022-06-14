@@ -90,6 +90,8 @@ Mastermind  Mastermind-tests
 
 Rules are simple, just type four digits unique code for guessing the code, for example *1564*.
 Try to guess the code, you have 10 attempts, and digits are from range [1,8].
+Game is showing you your last guesses with the hint, how many digits are in position or present but not at position on the right side of every attempt.
+Program also inform you if you finished the game without solution or you win with exact code.
 
 ```
 [sulphux@DESKTOP-OQTF1Q9 build]$ ./bin/Mastermind
