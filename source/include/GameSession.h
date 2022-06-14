@@ -6,38 +6,47 @@
 
 #include <vector>
 #include <string>
+#include <string_view>
+#include <utility>
 
 class GameSession {
 public:
-	GameSession();
-	void startNewGame();
-	void finishGame();
-	void showPlayerGuesses();
-	std::string getGuessCodeFromPlayer();
-	void judgeNewCodeAndStore(const std::string codeStr);
-	bool isGameFinished();
-	bool isPlayerWinner() const;
-	int getSizeOfStoredGuesses() const;
-	void printSolution() const;
+	GameSession() = default;
+	void run();
+
 private:
 	struct ProcessedGuess {
-		ProcessedGuess(Code* c, Suggestion s) : code(c), suggestion(s) {}
-		Code* code;
+		ProcessedGuess(CodePtr c, Suggestion s) : code(c), suggestion(s) {}
+		CodePtr code;
 		Suggestion suggestion;
 	};
 
-	typedef std::vector<ProcessedGuess> codePtrVector;
+	typedef std::vector<ProcessedGuess> ProcessedGuessesVector;
 
-	Arbiter _arbiter;
-	const int _maxAttempts = 10;
-	const size_t _codeSize = 4;
-	const int _elements = 8;
+	Arbiter _arbiter{};
+
+	static constexpr int _MAX_ATTEMPTS = 10;
+	static constexpr int _ELEMENTS_AMOUNT = 8;
+	static constexpr size_t _CODE_SIZE = 4;
 
 	int _currentAttempt = 0;
 	bool _gameIsFinished = false;
 	bool _codeIsSolved = false;
-	codePtrVector _guessAttempts;
 
-	bool _checkInputStringCorrectness(const size_t size, const int maxElement, const std::string& str, std::string& feedbackMessage);
+	ProcessedGuessesVector _guessAttempts{};
+
+	void _startNewGame();
+	void _finishGame();
+	void _showPlayerGuesses();
+	void _judgeNewCodeAndStore(const std::string& codeStr);
+	void _printSolution() const;
+
+	size_t _getSizeOfStoredGuesses() const;
+
+	bool _isGameFinished();
+	bool _isPlayerWinner() const;
+	std::pair<bool, std::string> _checkInputStringCorrectness(const std::string& str);
 	bool _checkIfGuessIsWinningTheGame(const ProcessedGuess& processedGuess);
+
+	std::string _getGuessCodeFromPlayer();
 };

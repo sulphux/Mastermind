@@ -2,27 +2,20 @@
 #include <iostream>
 #include "Suggestion.h"
 
-std::string Suggestion::toString() const
-{
-	std::string result;
-	result = "A: " + std::to_string(this->_atPosition) + " P: " + std::to_string(this->_notAtPosition);
-	return result;
-}
-
 void Suggestion::incrementAtPosition() {
-	this->_atPosition++;
+	_atPosition++;
 }
 
 void Suggestion::incrementNotAtPosition() {
-	this->_notAtPosition++;
+	_notAtPosition++;
 }
 
 int Suggestion::getAtPositionAmount() const {
-	return this->_atPosition;
+	return _atPosition;
 }
 
 int Suggestion::getNotAtPositionAmount() const {
-	return this->_notAtPosition;
+	return _notAtPosition;
 }
 
 std::ostream& operator<<(std::ostream& os, const Suggestion& st)

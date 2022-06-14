@@ -1,16 +1,15 @@
 #include "Arbiter.h"
 #include "Code.h"
 #include "Suggestion.h"
-#include "Arbiter.h"
 
-void Arbiter::rememberCodeToGuess(const Code* newCodeToGuess) {
-	_codeToGuess = const_cast<Code*>(newCodeToGuess);
+void Arbiter::rememberCodeToGuess(const CodePtr newCodeToGuess) {
+	_codeToGuess = newCodeToGuess;
 }
 
-Suggestion Arbiter::makeNewSuggestionFromNewCode(const Code* codeUserGuessed) {
-	Suggestion newSuggestion;
-	for(int i = 0; i<codeUserGuessed->getSize(); ++i) {
-		for(int j = 0; j<_codeToGuess->getSize(); ++j) {
+Suggestion Arbiter::makeNewSuggestionFromNewCode(const CodePtr codeUserGuessed) {
+	Suggestion newSuggestion{};
+	for(size_t i = 0; i<codeUserGuessed->getSize(); ++i) {
+		for(size_t j = 0; j<_codeToGuess->getSize(); ++j) {
 			if (codeUserGuessed->getDigitAt(i) == _codeToGuess->getDigitAt(j)) {
 				if (i == j) {
 					newSuggestion.incrementAtPosition();
@@ -24,7 +23,7 @@ Suggestion Arbiter::makeNewSuggestionFromNewCode(const Code* codeUserGuessed) {
 	return newSuggestion;
 }
 
-Code* Arbiter::unrevealSolution() const
+CodePtr Arbiter::unrevealSolution() const
 {
 	return _codeToGuess;
 }

@@ -8,3 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory ("source")
 add_subdirectory ("tests")
+
+set_target_properties( Mastermind-tests Mastermind
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)

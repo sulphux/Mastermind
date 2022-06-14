@@ -4,6 +4,8 @@
 
 class CodeFactory {
 public:
-	static Code* createRandomCode(const int size);
-	static Code* createCodeFromString(const std::string codeStr);
+	static CodePtr createRandomCode(const int size);
+	static CodePtr createCodeFromString(const std::string& codeStr);
+private:
+	static constexpr int _NUMBER_BASE = 10;
 };
